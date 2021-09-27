@@ -647,6 +647,33 @@ public class GHPullRequest extends GHIssue implements Refreshable {
     }
 
     /**
+     * Merge this pull request, using the specified merge method.
+     * <p>
+     * The equivalent of the big green "Merge pull request" button.
+     *
+     * @param title
+     *            Commit title. If null, the default one will be used.
+     * @param msg
+     *            Commit message. If null, the default one will be used.
+     * @param sha
+     *            the sha
+     * @param method
+     *            SHA that pull request head must match to allow merge.
+     * @throws IOException
+     *             the io exception
+     */
+    public void merge(String title, String msg, String sha, MergeMethod method) throws IOException {
+        root.createRequest()
+                .method("PUT")
+                .with("commit_title", title)
+                .with("commit_message", msg)
+                .with("sha", sha)
+                .with("merge_method", method)
+                .withUrlPath(getApiRoute() + "/merge")
+                .send();
+    }
+
+    /**
      * The enum MergeMethod.
      */
     public enum MergeMethod {
